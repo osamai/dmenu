@@ -929,7 +929,7 @@ setup(void)
 static void
 usage(void)
 {
-	die("usage: dmenu [-bfirvP] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
+	die("usage: dmenu [-bfFirvP] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
 	    "             [-bw borderwidth] [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
 }
 
@@ -953,8 +953,8 @@ main(int argc, char *argv[])
 			fast = 1;
 		else if (!strcmp(argv[i], "-c"))   /* centers dmenu on screen */
 			centered = 1;
-		else if (!strcmp(argv[i], "-F"))   /* grabs keyboard before reading stdin */
-			fuzzy = 0;
+		else if (!strcmp(argv[i], "-F"))   /* enables fuzzy-matching */
+			fuzzy = 1;
 		else if (!strcmp(argv[i], "-i")) { /* case-insensitive item matching */
 			fstrncmp = strncasecmp;
 			fstrstr = cistrstr;
