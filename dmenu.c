@@ -843,7 +843,7 @@ static void
 usage(void)
 {
 	die("usage: dmenu [-bfirvP] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
-	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
+	    "             [-bw borderwidth] [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
 }
 
 int
