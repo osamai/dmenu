@@ -45,11 +45,11 @@ static unsigned int border_width = 0;
  * Xresources preferences to load at startup
  */
 static const ResourcePref resources[] = {
-	{ "font",        STRING, &font },
-	{ "color0",      STRING,  &normbgcolor },
-	{ "color8",      STRING,  &selbgcolor },
-	{ "color7",      STRING,  &normfgcolor },
-	{ "color15",     STRING,  &selfgcolor },
-	{ "prompt",      STRING, &prompt },
-	{ "borderwidth", STRING, &border_width},
+	{ "font",           STRING, &font },
+	{ "background",     STRING, &normbgcolor },
+	{ "selectionColor", STRING, &selbgcolor },
+	{ "foreground",     STRING, &normfgcolor },
+	{ "foreground",     STRING, &selfgcolor },
+	{ "prompt",         STRING, &prompt },
+	{ "borderwidth",    STRING, &border_width},
 };
