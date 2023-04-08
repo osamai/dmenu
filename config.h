@@ -10,7 +10,7 @@ static const unsigned int alpha = 0xf0;
 static char font[] = "monospace:size=10";
 static const char *fonts[] = {
 	font,
-	"monospace:size=10",
+	"NotoColorEmoji:pixelsize=8:antialias=true:autohint=true",
 };
 static char *prompt       = NULL;      /* -p  option; prompt to the left of input field */
 static char normfgcolor[] = "#bbbbbb";
