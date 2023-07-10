@@ -17,11 +17,13 @@ static char normfgcolor[] = "#bbbbbb";
 static char normbgcolor[] = "#222222";
 static char selfgcolor[]  = "#eeeeee";
 static char selbgcolor[]  = "#005577";
+static char outfgcolor[]  = "#000000";
+static char outbgcolor[]  = "#00ffff";
 static char *colors[SchemeLast][2] = {
  	/*               fg           bg       */
 	[SchemeNorm] = { normfgcolor, normbgcolor },
 	[SchemeSel]  = { selfgcolor,  selbgcolor  },
-	[SchemeOut]  = { "#000000",   "#00ffff" },
+	[SchemeOut]  = { outfgcolor,  outbgcolor  },
  };
 
 static const unsigned int alphas[SchemeLast][2] = {
@@ -47,10 +49,12 @@ static unsigned int border_width = 0;
  */
 static const ResourcePref resources[] = {
 	{ "font",          STRING, &font },
-	{ "background",    STRING, &normbgcolor },
-	{ "backgroundSel", STRING, &selbgcolor },
 	{ "foreground",    STRING, &normfgcolor },
+	{ "background",    STRING, &normbgcolor },
 	{ "foregroundSel", STRING, &selfgcolor },
+	{ "backgroundSel", STRING, &selbgcolor },
+	{ "foregroundOut", STRING, &outfgcolor },
+	{ "backgroundOut", STRING, &outbgcolor },
 	{ "prompt",        STRING, &prompt },
 	{ "borderwidth",   STRING, &border_width},
 };
