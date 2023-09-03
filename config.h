@@ -8,22 +8,17 @@ static int min_width = 500; /* minimum width when centered */
 static char *prompt = NULL; /* -p  option; prompt to the left of input field */
 
 /* -fn option overrides fonts[0]; default X11 font or font set */
-static char font[] = "monospace:size=10";
 static const char *fonts[] = {
-	font,
+	"monospace:size=10"
 	"NotoColorEmoji:pixelsize=10:antialias=true:autohint=true",
 };
 
-static char normfgcolor[] = "#bbbbbb";
-static char normbgcolor[] = "#222222";
-static char selfgcolor[]  = "#eeeeee";
-static char selbgcolor[]  = "#005577";
-static char *colors[SchemeLast][2] = {
- 	/*               fg           bg       */
-	[SchemeNorm] = { normfgcolor, normbgcolor },
-	[SchemeSel]  = { selfgcolor,  selbgcolor  },
-	[SchemeOut]  = { "#000000",   "#00ffff"   },
- };
+static const char *colors[SchemeLast][2] = {
+	/*               fg         bg       */
+	[SchemeNorm] = { "#d8dee9", "#242933" },
+	[SchemeSel]  = { "#eceff4", "#5e81ac" },
+	[SchemeOut]  = { "#000000", "#00ffff" },
+};
 
 static float alpha = 0.8;
 
@@ -38,16 +33,3 @@ static const char worddelimiters[] = " ";
 
 /* Size of the window border */
 static unsigned int border_width = 0;
-
-/*
- * Xresources preferences to load at startup
- */
-static const ResourcePref resources[] = {
-	{ "font",          STRING, &font },
-	{ "borderwidth",   STRING, &border_width },
-	{ "foreground",    STRING, &normfgcolor },
-	{ "background",    STRING, &normbgcolor },
-	{ "foregroundSel", STRING, &selfgcolor },
-	{ "backgroundSel", STRING, &selbgcolor },
-	{ "alpha",         FLOAT,  &alpha }
-};
