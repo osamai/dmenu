@@ -15,6 +15,7 @@
 #include <X11/extensions/Xinerama.h>
 #endif
 #include <X11/Xft/Xft.h>
+#include <X11/Xresource.h>
 
 #include "drw.h"
 #include "util.h"
@@ -746,11 +747,51 @@ usage(void)
 	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
 }
 
+static void
+xresources(void) {
+	XrmInitialize();
+	char* xrm;
+	if ((xrm = XResourceManagerString(drw->dpy))) {
+		char *type;
+		XrmDatabase xdb = XrmGetStringDatabase(xrm);
+		XrmValue xval;
+		if (XrmGetResource(xdb, "dmenu.font", "*", &type, &xval)){
+			fonts[0] = strdup(xval.addr);
+		}
+		if (XrmGetResource(xdb, "dmenu.color0", "*", &type, &xval)){
+			colors[SchemeNorm][ColBg] = strdup(xval.addr);
+		}
+		if (XrmGetResource(xdb, "dmenu.color4", "*", &type, &xval)) {
+			colors[SchemeSel][ColBg] = strdup(xval.addr);
+		}
+		if (XrmGetResource(xdb, "dmenu.color15", "*", &type, &xval)) {
+			colors[SchemeNorm][ColFg] = strdup(xval.addr);
+			colors[SchemeSel][ColFg] = strdup(xval.addr);
+		}
+		XrmDestroyDatabase(xdb);
+	}
+}
+
 int
 main(int argc, char *argv[])
 {
 	XWindowAttributes wa;
 	int i, fast = 0;
+
+	if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
+		fputs("warning: no locale support\n", stderr);
+	if (!(dpy = XOpenDisplay(NULL)))
+		die("cannot open display");
+	screen = DefaultScreen(dpy);
+	root = RootWindow(dpy, screen);
+	if (!embed || !(parentwin = strtol(embed, NULL, 0)))
+		parentwin = root;
+	if (!XGetWindowAttributes(dpy, parentwin, &wa))
+		die("could not get embedding window attributes: 0x%lx",
+		    parentwin);
+	drw = drw_create(dpy, screen, root, wa.width, wa.height);
+
+	xresources();
 
 	for (i = 1; i < argc; i++)
 		/* these options take no arguments */
@@ -792,18 +833,6 @@ main(int argc, char *argv[])
 		else
 			usage();
 
-	if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
-		fputs("warning: no locale support\n", stderr);
-	if (!(dpy = XOpenDisplay(NULL)))
-		die("cannot open display");
-	screen = DefaultScreen(dpy);
-	root = RootWindow(dpy, screen);
-	if (!embed || !(parentwin = strtol(embed, NULL, 0)))
-		parentwin = root;
-	if (!XGetWindowAttributes(dpy, parentwin, &wa))
-		die("could not get embedding window attributes: 0x%lx",
-		    parentwin);
-	drw = drw_create(dpy, screen, root, wa.width, wa.height);
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
