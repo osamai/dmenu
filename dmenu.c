@@ -748,28 +748,29 @@ usage(void)
 }
 
 static void
-xresources(void) {
+loadxresources(void) {
 	XrmInitialize();
-	char* xrm;
-	if ((xrm = XResourceManagerString(drw->dpy))) {
-		char *type;
-		XrmDatabase xdb = XrmGetStringDatabase(xrm);
-		XrmValue xval;
-		if (XrmGetResource(xdb, "dmenu.font", "*", &type, &xval)){
-			fonts[0] = strdup(xval.addr);
-		}
-		if (XrmGetResource(xdb, "dmenu.color0", "*", &type, &xval)){
-			colors[SchemeNorm][ColBg] = strdup(xval.addr);
-		}
-		if (XrmGetResource(xdb, "dmenu.color4", "*", &type, &xval)) {
-			colors[SchemeSel][ColBg] = strdup(xval.addr);
-		}
-		if (XrmGetResource(xdb, "dmenu.color15", "*", &type, &xval)) {
-			colors[SchemeNorm][ColFg] = strdup(xval.addr);
-			colors[SchemeSel][ColFg] = strdup(xval.addr);
-		}
-		XrmDestroyDatabase(xdb);
+	char* xrm = XResourceManagerString(drw->dpy);
+	if (!xrm) {
+		return;
 	}
+	char *type;
+	XrmDatabase xdb = XrmGetStringDatabase(xrm);
+	XrmValue xval;
+	if (XrmGetResource(xdb, "dmenu.font", "*", &type, &xval)){
+		fonts[0] = strdup(xval.addr);
+	}
+	if (XrmGetResource(xdb, "dmenu.color0", "*", &type, &xval)){
+		colors[SchemeNorm][ColBg] = strdup(xval.addr);
+	}
+	if (XrmGetResource(xdb, "dmenu.color4", "*", &type, &xval)) {
+		colors[SchemeSel][ColBg] = strdup(xval.addr);
+	}
+	if (XrmGetResource(xdb, "dmenu.color15", "*", &type, &xval)) {
+		colors[SchemeNorm][ColFg] = strdup(xval.addr);
+		colors[SchemeSel][ColFg] = strdup(xval.addr);
+	}
+	XrmDestroyDatabase(xdb);
 }
 
 int
@@ -791,7 +792,7 @@ main(int argc, char *argv[])
 		    parentwin);
 	drw = drw_create(dpy, screen, root, wa.width, wa.height);
 
-	xresources();
+	loadxresources();
 
 	for (i = 1; i < argc; i++)
 		/* these options take no arguments */
